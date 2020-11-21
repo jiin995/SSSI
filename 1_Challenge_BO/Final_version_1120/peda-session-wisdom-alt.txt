@@ -1,0 +1,2 @@
+break /home/corso/SoftwareSecurity/challenge_BO_11_32b/wisdom-alt.c:102
+

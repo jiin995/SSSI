@@ -1,0 +1,1 @@
+gcc -O0 -o wisdom-alt -m32 -ggdb -fno-stack-protector -z execstack wisdom-alt.c

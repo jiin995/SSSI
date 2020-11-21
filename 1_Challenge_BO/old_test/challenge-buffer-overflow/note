@@ -1,0 +1,30 @@
+- Compilare con le ottimizzazioni disattivate -O0, sennò p ha un puntatore a null pat_on_back
+- Il nome della funzione è l'indirizzo stesso
+- la read non può essere la causa del buffer overflow perchè legge un numero di byte pari a 1023
+- sizeof(ptrs[0]) = 8
+
+- atoi numero a 32 bit a me serve a 64 bit sto sbagliando io?
+	la strada che sto seguendo è errata? con atol funziona...
+
+- break 93 e 102
+
+
+
+Soluzione pat_on_back:
+
+- Compilare a 32 sennò si hanno problemi con l'atoi, oppure compilare a 64 ma mettere atol! Il problema è legato al fatto che il l'offset tra l'indirizzo di ptrs e quello di p (Puntatore a pat_on_back) è maggiore del massimo numero rappresentabile su 32 bit.
+
+- Impostare i break point a 32 e 102 
+- Arrivato al primo break point, stampare il puntatore a ptrs e a p
+- Prendere gli indirizzi e farne la sottrazione su in hex e convertire il risultato in dec
+- Dividere il valore per 4 se è compilato a 32 bit o per 8 se è compilato a 64
+- Questo è l'offset che è necessario a dare in input per effettuare l'exploit.
+
+
+Soluzione write_secret:
+
+- Prender l'indirizzo di write_secret
+- Capire quanto spazio ci sta tra wis e l'indirizzo di ritorno che sta in EIP (L'offset dovrebbe essere 151 o 152) o sullo stack, si può mettere un break al return riga 82 e da li vedere come evolve lo stack con stepi
+- Creare un input con 2\n 1 1022 caratteri in modo da riempire il buffer della read dell'opzione e poi aggiungere 151-152 caratteri prima dell'indirizzo di ritorno
+- l'indirizzo di ritorno è in little endian e l'ultimo byte deve avere un valore ascii più 8 (non ho ancora capito perchè ma quando fa la pop dell'indirizzo dallo stack sottrae 8). L'indirizzo può essere anche messo come caratteri ASCII
+- generato il pattern fare run < pattern in gdb 
